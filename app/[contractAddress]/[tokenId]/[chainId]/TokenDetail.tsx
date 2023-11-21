@@ -60,7 +60,7 @@ export const TokenDetail = ({
 }: Props) => {
   let currentAnimate = isOpen ? "open" : "closed";
 
-  const CustomLogo = logo ? Logo[logo.toUpperCase()] : Logo["DEFAULT"];
+  const CustomLogo = logo ? Logo[logo.toUpperCase()] : Logo["GALVERSE"];
 
   return (
     <div className={className}>
