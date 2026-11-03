@@ -68,7 +68,16 @@ export async function getNftAsset(
   apiEndpoint?: string
 ): Promise<string[] | string> {
   if (isTokenId(tokenId)) {
-    const response = await fetch(`${apiEndpoint || nftUrl}/${tokenId}`);
+    const assetUrl = `${apiEndpoint || nftUrl}/${tokenId}`;
+    let response: Response;
+    try {
+      response = await fetch(assetUrl);
+    } catch {
+      // OpenSea embeds this page in a sandboxed iframe (origin "null"), and the
+      // endpoint only allows CORS from our production domain, so fetch fails there.
+      // An <img> needs no CORS, so use the endpoint as the image itself.
+      return assetUrl;
+    }
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
