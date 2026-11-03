@@ -74,6 +74,12 @@ export async function getNftAsset(
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
+    // The endpoint may serve the image itself (galverse.art/pfp/<id> returns a PNG)
+    // rather than metadata JSON; then the image is its own URL.
+    if (response.headers.get("content-type")?.startsWith("image/")) {
+      return response.url;
+    }
+
     const data = await response.json();
     //return data;
     return data.image.replace("ipfs://", "https://cloudflare-ipfs.com/ipfs/");

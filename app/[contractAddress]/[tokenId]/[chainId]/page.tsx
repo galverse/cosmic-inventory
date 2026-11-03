@@ -5,7 +5,7 @@ import { TokenboundClient } from "@tokenbound/sdk";
 import useSWR from "swr";
 import { isNil } from "lodash";
 import { getAccount, getAccountStatus, getLensNfts, getNfts } from "@/lib/utils";
-import { rpcClient } from "@/lib/clients";
+import { rpcClient, rpcUrlFor } from "@/lib/clients";
 import { TbLogo } from "@/components/icon";
 import { useGetApprovals, useNft, useTBADetails } from "@/lib/hooks";
 import { TbaOwnedNft } from "@/lib/types";
@@ -32,7 +32,10 @@ export default function Token({ params, searchParams }: TokenParams) {
   const { disableloading, logo } = searchParams;
   const [showTokenDetail, setShowTokenDetail] = useState(false);
   const chainIdNumber = parseInt(chainId);
-  const tokenboundClient = new TokenboundClient({ chainId: chainIdNumber });
+  const tokenboundClient = new TokenboundClient({
+    chainId: chainIdNumber,
+    publicClientRPCUrl: rpcUrlFor(chainIdNumber),
+  });
 
   const {
     data: nftImages,
